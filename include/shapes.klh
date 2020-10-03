@@ -1,0 +1,13 @@
+%ifndef shapes_h
+%define shapes_h
+
+%include namespace.m
+
+%define prog_name shapes
+%define prog_name_alias shape
+
+-- namespaced members in format <prog_name_alias>__<func_name>
+declare_function(prog_name,point_collision_on_cylinder,prog_name_alias,cylcol)
+ROUTINE shapes__point_collision_on_cylinder(point: XYZWPR; origin : XYZWPR; radius : REAL; start_z : REAL; length : REAL) : BOOLEAN FROM shapes
+
+%endif --shapes_h

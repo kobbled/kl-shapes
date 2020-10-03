@@ -1,0 +1,9 @@
+%ifndef box_t
+%define box_t
+
+%include shapes.klt
+
+VAR
+  this : BOX
+
+%endif --box_t

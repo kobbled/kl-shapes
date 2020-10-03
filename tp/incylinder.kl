@@ -1,0 +1,29 @@
+PROGRAM incylinder
+%NOBUSYLAMP
+%NOLOCKGROUP
+
+VAR
+	out_reg : INTEGER
+	pr_num1 : INTEGER
+	point : XYZWPR
+	pr_num2 : INTEGER
+	origin : XYZWPR
+	radius : REAL
+	start_z : REAL
+	length : REAL
+%from tpe.klh %import get_real_arg,get_xyzwpr_arg,get_int_arg
+%from registers.klh %import set_boolean
+%from pose.klh %import get_posreg_xyz, get_posreg_joint, set_posreg_xyz, set_posreg_joint
+%from shapes.klh %import point_collision_on_cylinder
+
+BEGIN
+	pr_num1 = tpe__get_int_arg(1)
+	pr_num2 = tpe__get_int_arg(2)
+	radius = tpe__get_real_arg(3)
+	start_z = tpe__get_real_arg(4)
+	length = tpe__get_real_arg(5)
+	point = pose__get_posreg_xyz(pr_num1, 1)
+	origin = pose__get_posreg_xyz(pr_num2, 1)
+	out_reg = tpe__get_int_arg(6)
+	registers__set_boolean(out_reg, shapes__point_collision_on_cylinder(point,origin,radius,start_z,length))
+END incylinder

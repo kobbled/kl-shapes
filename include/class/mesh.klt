@@ -1,0 +1,11 @@
+%ifndef mesh_t
+%define mesh_t
+
+%include shapes.klt
+
+VAR
+  polygons : PATH nodedata = POLYGON
+  centroid : VECTOR
+  length : INTEGER
+
+%endif --mesh_t

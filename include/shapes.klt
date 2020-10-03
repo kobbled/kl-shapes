@@ -1,0 +1,46 @@
+%ifndef shapes_t
+%define shapes_t
+
+TYPE
+
+  LINE FROM shapes = STRUCTURE
+    start_pnt : VECTOR
+    end_pnt : VECTOR
+  ENDSTRUCTURE
+
+  LINE2 FROM shapes = STRUCTURE
+    point : VECTOR
+    vec : VECTOR
+  ENDSTRUCTURE
+
+  PLANE FROM shapes = STRUCTURE
+    normal : VECTOR
+    d : REAL
+  ENDSTRUCTURE
+
+  POLYGON FROM shapes = STRUCTURE
+    verts : ARRAY[3] OF VECTOR
+    normal : VECTOR
+    center : VECTOR
+  ENDSTRUCTURE
+
+  --box vertices should be defined as
+  --      +----+
+  --     /    /|
+  --    /    / |
+  --   /    /  |
+  --  /    /   4
+  -- +----3   / 
+  -- |    |  /  
+  -- |    | /   
+  -- |    |/    
+  -- 2----1  
+  BOX FROM shapes = STRUCTURE
+    verts : ARRAY[5] OF VECTOR
+    vects : ARRAY[3] OF VECTOR
+    normals : ARRAY[3] OF VECTOR
+    centroid : VECTOR
+  ENDSTRUCTURE
+
+
+%endif --shapes_t

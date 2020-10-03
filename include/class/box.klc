@@ -1,0 +1,94 @@
+PROGRAM class_name
+%NOBUSYLAMP
+%COMMENT = 'box object'
+%NOLOCKGROUP
+%UNINITVARS
+
+--box vertices should be defined as
+  --     (E)----+
+  --     /    /|
+  --    /    / |
+  --   /    /  |
+  --  /    /   D
+  -- +----C   / 
+  -- |    |  /  
+  -- |    | /   
+  -- |    |/    
+  -- B----A  
+
+%include namespace.m
+
+%include errors.klt
+%include box.klt
+
+%from errors.klh %import karelError, CHK_STAT
+%from math.klh %import norm
+%include box.klh
+
+
+-- ** private **
+
+-- ** public **
+
+ROUTINE new
+  VAR
+    d_prod : REAL
+  BEGIN
+    IF ARRAY_LEN(vertices) <> 4 THEN
+      karelError(ARR_LEN_MISMATCH,'4 verticies are needed to build a box', ER_ABORT)
+    ENDIF
+
+    this.verts[1] = vertices[1] ; this.verts[2] = vertices[2] ;
+    this.verts[3] = vertices[3] ; this.verts[4] = vertices[4] ;
+
+    --compute edges
+    this.vects[1] = this.verts[2] - this.verts[1]
+    this.vects[2] = this.verts[3] - this.verts[1]
+    this.vects[3] = this.verts[4] - this.verts[1]
+
+    --compute normals
+     --which side of the ABC plane is D on using triple product
+    d_prod = this.vects[3]@(this.vects[1]#this.vects[2])
+    IF (d_prod > 0) THEN
+      -- flip normals
+      this.normals[1] = (this.vects[2]#this.vects[1]) --ABC normal
+    ELSE
+      this.normals[1] = (this.vects[1]#this.vects[2]) --ABC normal
+    ENDIF
+    this.normals[1] = this.normals[1]/math__norm(this.normals[1])
+
+      --which side of the ABD plane is C on using triple product
+    d_prod = this.vects[2]@(this.vects[1]#this.vects[3])
+    IF (d_prod > 0) THEN
+      -- flip normals
+      this.normals[2] = this.vects[3]#this.vects[1] --ABD normal
+    ELSE
+      this.normals[2] = this.vects[1]#this.vects[3] --ABD normal
+    ENDIF
+    this.normals[2] = this.normals[2]/math__norm(this.normals[2])
+
+    --compute third normal
+    this.normals[3] = this.normals[1]#this.normals[2] -- ACD normal
+
+    --compute (E)
+    this.verts[5] = this.verts[1] + (this.vects[1] + this.vects[2] + this.vects[3])
+    --compute centroid
+    this.centroid = this.verts[1] + (this.vects[1] + this.vects[2] + this.vects[3])/2
+    
+  END new
+
+
+ROUTINE point_collision
+  BEGIN
+    --compute triple products for all 6 sides of cube.
+    --if triple product < 0 for all sides point is inside of box
+
+    -- A touches 3 sides ; (E) touches the other three sides
+
+    RETURN( ((p-this.verts[1])@this.normals[1] < 0) AND ((p-this.verts[5])@(-1*this.normals[1]) < 0) AND &
+            ((p-this.verts[1])@this.normals[2] < 0) AND ((p-this.verts[5])@(-1*this.normals[2]) < 0) AND &
+            ((p-this.verts[1])@this.normals[3] < 0) AND ((p-this.verts[5])@(-1*this.normals[3]) < 0) )
+  END point_collision
+
+BEGIN
+END class_name

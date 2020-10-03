@@ -1,0 +1,51 @@
+PROGRAM test_shapes
+%NOLOCKGROUP
+
+%include common_poses.klt
+%include shapes.klt
+
+%include shapes.klh
+%from strings.klh %import s_to_xyzwpr
+%INCLUDE kunit.klh
+
+ROUTINE t_cyl_col : BOOLEAN
+  VAR
+    p : ARRAY[4] OF XYZWPR
+    b : ARRAY[4] OF BOOLEAN
+    origin : XYZWPR
+  BEGIN
+    --inside cylinder
+    p[1] = s_to_xyzwpr('30,30,290,0,0,0',',')
+    --at surface of cylinder
+    p[2] = s_to_xyzwpr('60,-85,330,0,0,0',',')
+    --outside cylinder
+    p[3] = s_to_xyzwpr('140,190,290,0,0,0',',')
+    -- in front of cylinder
+    p[4] = s_to_xyzwpr('0,0,710,0,0,0',',')
+
+    --set object frame
+    origin = ZEROPOS(1)
+
+
+    --test collisions
+    -- radius = 100mm , start_z = 270mm, length = 300mm
+    -- b1 = true
+    b[1] = shapes__point_collision_on_cylinder((p[1]), origin, 100, 270, 300)
+    -- b2 = false
+    b[2] = shapes__point_collision_on_cylinder((p[2]), origin, 100, 270, 300)
+    -- -- b3 = false
+    b[3] = shapes__point_collision_on_cylinder((p[3]), origin, 100, 270, 300)
+    -- -- b4 = false
+    b[4] = shapes__point_collision_on_cylinder((p[4]), origin, 100, 270, 300)
+
+    RETURN ( kunit_assert(b[1]) AND NOT kunit_assert(b[2]) AND & 
+             NOT kunit_assert(b[3]) AND NOT kunit_assert(b[4]))
+
+  END t_cyl_col
+
+BEGIN
+    -- total assersions 4
+    kunit_test('test straight cylinder point collision', t_cyl_col) -- assersions 4 
+
+    kunit_done
+END test_shapes
