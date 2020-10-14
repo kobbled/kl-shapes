@@ -19,7 +19,6 @@
     "math",
     "errors",
     "pose",
-    "math",
     "KUnit",
     "ktransw-macros"
   ],
