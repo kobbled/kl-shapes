@@ -24,7 +24,7 @@ ROUTINE clear
 	  ENDWHILE
   END clear
 
-ROUTINE append(p : POLYGON )
+ROUTINE append(p : t_POLYGON )
   VAR
     status : INTEGER
   BEGIN
@@ -60,7 +60,7 @@ ROUTINE new
 
 ROUTINE add_polygon
   VAR
-    p : POLYGON
+    p : t_POLYGON
   BEGIN
     IF ARRAY_LEN(vertices) <> 3 THEN
       karelError(ARR_LEN_MISMATCH,'3 verticies are needed to build a polygon', ER_ABORT)

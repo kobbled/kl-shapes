@@ -4,7 +4,7 @@
 %include shapes.klt
 
 VAR
-  polygons : PATH nodedata = POLYGON
+  polygons : PATH nodedata = t_POLYGON
   centroid : VECTOR
   length : INTEGER
 

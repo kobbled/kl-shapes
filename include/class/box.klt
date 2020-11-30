@@ -4,6 +4,6 @@
 %include shapes.klt
 
 VAR
-  this : BOX
+  this : t_BOX
 
 %endif --box_t

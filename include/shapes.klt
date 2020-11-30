@@ -3,22 +3,22 @@
 
 TYPE
 
-  LINE FROM shapes = STRUCTURE
-    start_pnt : VECTOR
-    end_pnt : VECTOR
+  t_LINE FROM shapes = STRUCTURE
+    r_o : VECTOR
+    r_1 : VECTOR
   ENDSTRUCTURE
 
-  LINE2 FROM shapes = STRUCTURE
+  t_LINE2 FROM shapes = STRUCTURE
     point : VECTOR
     vec : VECTOR
   ENDSTRUCTURE
 
-  PLANE FROM shapes = STRUCTURE
+  t_PLANE FROM shapes = STRUCTURE
     normal : VECTOR
     d : REAL
   ENDSTRUCTURE
 
-  POLYGON FROM shapes = STRUCTURE
+  t_POLYGON FROM shapes = STRUCTURE
     verts : ARRAY[3] OF VECTOR
     normal : VECTOR
     center : VECTOR
@@ -35,7 +35,7 @@ TYPE
   -- |    | /   
   -- |    |/    
   -- 2----1  
-  BOX FROM shapes = STRUCTURE
+  t_BOX FROM shapes = STRUCTURE
     verts : ARRAY[5] OF VECTOR
     vects : ARRAY[3] OF VECTOR
     normals : ARRAY[3] OF VECTOR
