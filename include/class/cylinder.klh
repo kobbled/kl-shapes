@@ -12,9 +12,9 @@ declare_member(class_name,point_collision,class_name,pcol)
 header_if -- ifndef class
 header_def -- define class
 
-ROUTINE new(vertices : ARRAY OF VECTOR) FROM class_name
+ROUTINE new(origin: XYZWPR; radius : REAL; height : REAL; hndl_colsn : BOOLEAN) FROM class_name
 ROUTINE clear FROM class_name
-ROUTINE copy(other_box : t_BOX) FROM class_name
+ROUTINE copy(other_box : t_CYLINDER) FROM class_name
 ROUTINE point_collision(p : VECTOR) : BOOLEAN FROM class_name
 
 %endif --end header

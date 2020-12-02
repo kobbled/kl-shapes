@@ -4,39 +4,43 @@ PROGRAM test_shapes
 %include common_poses.klt
 %include shapes.klt
 
-%include shapes.klh
-%from strings.klh %import s_to_xyzwpr
+%from systemlib.klh %import VEC
 %INCLUDE kunit.klh
+
+%class cyltst('cylinder.klc','cylinder.klh')
 
 ROUTINE t_cyl_col : BOOLEAN
   VAR
-    p : ARRAY[4] OF XYZWPR
+    p : ARRAY[4] OF VECTOR
     b : ARRAY[4] OF BOOLEAN
     origin : XYZWPR
   BEGIN
-    --inside cylinder
-    p[1] = s_to_xyzwpr('30,30,290,0,0,0',',')
-    --at surface of cylinder
-    p[2] = s_to_xyzwpr('60,-85,330,0,0,0',',')
-    --outside cylinder
-    p[3] = s_to_xyzwpr('140,190,290,0,0,0',',')
-    -- in front of cylinder
-    p[4] = s_to_xyzwpr('0,0,710,0,0,0',',')
-
-    --set object frame
+    --set cylinder origin
     origin = ZEROPOS(1)
+    origin.z = 270
+    --create cylinder
+    cyltst__new(origin, 100, 300, TRUE)
+    
+    --inside cylinder
+    p[1] = VEC(30,30,290)
+    --at surface of cylinder
+    p[2] = VEC(60,-85,330)
+    --outside cylinder
+    p[3] = VEC(140,190,290)
+    -- in front of cylinder
+    p[4] = VEC(0,0,710)
 
 
     --test collisions
     -- radius = 100mm , start_z = 270mm, length = 300mm
     -- b1 = true
-    b[1] = shapes__point_collision_on_cylinder((p[1]), origin, 100, 270, 300)
+    b[1] = cyltst__point_collision(p[1])
     -- b2 = false
-    b[2] = shapes__point_collision_on_cylinder((p[2]), origin, 100, 270, 300)
+    b[2] = cyltst__point_collision(p[2])
     -- -- b3 = false
-    b[3] = shapes__point_collision_on_cylinder((p[3]), origin, 100, 270, 300)
+    b[3] = cyltst__point_collision(p[3])
     -- -- b4 = false
-    b[4] = shapes__point_collision_on_cylinder((p[4]), origin, 100, 270, 300)
+    b[4] = cyltst__point_collision(p[4])
 
     RETURN ( kunit_assert(b[1]) AND NOT kunit_assert(b[2]) AND & 
              NOT kunit_assert(b[3]) AND NOT kunit_assert(b[4]))

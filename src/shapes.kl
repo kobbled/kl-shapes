@@ -4,57 +4,10 @@ PROGRAM shapes
 %NOLOCKGROUP
 %NOPAUSE = COMMAND + TPENABLE + ERROR
 
-%include common_poses.klt
+%include systemvars.klt
 %include shapes.klt
 
-%include pose.klh
-%from strings.klh %import s_to_vec
-%from kunit.klh %import kunit_eq_pos  
 %include shapes.klh
-
---box obj
-%class box1('box.klc','box.klh')
-
-ROUTINE shapes__point_collision_on_cylinder
-  VAR
-    v : ARRAY[4] OF VECTOR
-    b : BOOLEAN
-    p_v : VECTOR 
-  BEGIN
-    --transform point to origin frame
-      point = INV((origin)):point
-      p_v = pose__pose_to_vector(point)
-    --box verts
-    v[1].x = radius ; v[1].y = -1*radius ; v[1].z = start_z + length ;
-    v[2].x = -1*radius ; v[2].y = -1*radius ; v[2].z = start_z + length ;
-    v[3].x = radius ; v[3].y = radius ; v[3].z = start_z + length ;
-    v[4].x = radius ; v[4].y = -1*radius ; v[4].z = start_z ;
-    
-    --create box
-    box1__new(v)
-
-
-    -- --check if point is inside box
-    b = box1__point_collision(p_v)
-
-
-    -- if box collision, there is a possible collision
-    -- with the cylinder. Check radius projection
-    IF b THEN
-      --radius of point p with respect to the origin
-      -- r^2 = x^2 + y^2
-      -- check if point radius is less than object radius
-      IF ((p_v.x*p_v.x + p_v.y*p_v.y) < radius*radius) THEN
-        b = TRUE
-      ELSE
-        b = FALSE
-      ENDIF
-    ENDIF
-
-    RETURN(b)
-
-  END shapes__point_collision_on_cylinder
-
 
 BEGIN
 END shapes

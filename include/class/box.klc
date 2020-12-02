@@ -19,9 +19,12 @@ PROGRAM class_name
 %include namespace.m
 
 %include errors.klt
-%include box.klt
+%include shapes.klt
 
-%from errors.klh %import karelError, CHK_STAT
+VAR
+  this : t_BOX
+
+%include errors.klh
 %from math.klh %import norm
 %include box.klh
 
@@ -76,6 +79,36 @@ ROUTINE new
     this.centroid = this.verts[1] + (this.vects[1] + this.vects[2] + this.vects[3])/2
     
   END new
+
+ROUTINE clear
+  VAR
+    i : INTEGER
+    uninit_var1 : ARRAY[5] OF VECTOR
+    uninit_var2 : ARRAY[3] OF VECTOR
+  BEGIN
+    FOR i=1 TO ARRAY_LEN(this.verts) DO
+      this.verts = uninit_var1
+    ENDFOR
+
+    FOR i=1 TO ARRAY_LEN(this.vects) DO
+      this.vects = uninit_var2
+    ENDFOR
+
+    FOR i=1 TO ARRAY_LEN(this.normals) DO
+      this.normals = uninit_var2
+    ENDFOR
+    
+    SET_UNINIT_V('class_name', 'this.centroid')
+    
+  END clear
+
+ROUTINE copy
+  BEGIN
+    other_box.verts = this.verts
+    other_box.vects = this.vects
+    other_box.normals = this.normals
+    other_box.centroid = this.centroid
+  END copy
 
 
 ROUTINE point_collision
