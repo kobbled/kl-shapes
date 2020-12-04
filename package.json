@@ -6,6 +6,7 @@
   "license" : "Apache 2.0",
   "author" : "kobbled",
   "source" : [
+    "src/shapes.kl"
   ],
   "tests" : [
     "test/test_shapes.kl"

@@ -6,5 +6,4 @@
 %define prog_name shapes
 %define prog_name_alias shape
 
-
 %endif --shapes_h

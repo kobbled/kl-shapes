@@ -9,6 +9,7 @@ PROGRAM test_shapes
 
 %class cyltst('cylinder.klc','cylinder.klh')
 
+
 ROUTINE t_cyl_col : BOOLEAN
   VAR
     p : ARRAY[4] OF VECTOR

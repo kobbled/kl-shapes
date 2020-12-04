@@ -3,16 +3,24 @@
 
 TYPE
 
+  --equation for line:
+  -- p = p_0 + v*t
+  -- where -INF < t < INF
   t_LINE FROM shapes = STRUCTURE
     point : VECTOR
     vec : VECTOR
   ENDSTRUCTURE
 
+  --equation for segment:
+  -- p = (1-t)*r_o + t*r_1
+  -- where 0 < t < 1
   t_SEGMENT FROM shapes = STRUCTURE
-    r_o : VECTOR
-    r_1 : VECTOR
+    r0 : VECTOR
+    r1 : VECTOR
   ENDSTRUCTURE
 
+  --equation for plane:
+  -- ax+by+cz+d=0
   t_PLANE FROM shapes = STRUCTURE
     normal : VECTOR
     d : REAL
@@ -29,14 +37,6 @@ TYPE
     normal : VECTOR
     d : REAL
     verts : ARRAY[4] OF VECTOR
-  ENDSTRUCTURE
-
-  ENDSTRUCTURE
-
-  t_POLYGON FROM shapes = STRUCTURE
-    verts : ARRAY[3] OF VECTOR
-    normal : VECTOR
-    center : VECTOR
   ENDSTRUCTURE
 
   --box vertices should be defined as
