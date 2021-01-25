@@ -19,6 +19,11 @@ TYPE
     r1 : VECTOR
   ENDSTRUCTURE
 
+  t_SEGMENTXYZ FROM shapes = STRUCTURE
+    r0 : XYZWPR
+    r1 : XYZWPR
+  ENDSTRUCTURE
+
   --equation for plane:
   -- ax+by+cz+d=0
   t_PLANE FROM shapes = STRUCTURE
