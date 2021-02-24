@@ -19,8 +19,10 @@
     "math",
     "errors",
     "pose",
-    "KUnit",
     "ktransw-macros",
     "systemlib"
+  ],
+  "tests-depends" : [
+    "KUnit"
   ]
 }
