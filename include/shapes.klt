@@ -29,6 +29,7 @@ TYPE
   t_PLANE FROM shapes = STRUCTURE
     normal : VECTOR
     d : REAL
+    origin : VECTOR
   ENDSTRUCTURE
 
   --plane verticies should be labeled ccw

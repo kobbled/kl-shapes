@@ -7,7 +7,34 @@ PROGRAM shapes
 %include systemvars.klt
 %include shapes.klt
 
+%include math.klh
 %include shapes.klh
 
 BEGIN
 END shapes
+
+
+ROUTINE shapes__create_plane
+  BEGIN
+    -- equation of plane ax+by+cz+d=0
+    out_plane.origin = origin
+
+    out_plane.normal = normal_vec/math__norm(normal_vec)
+    -- solve for d
+    out_plane.d = -1*(out_plane.normal@origin)
+  END shapes__create_plane
+
+ROUTINE shapes__project_point_on_plane
+  BEGIN
+    -- calculate distance from point to the plane
+    -- move point back this distance along plane normal
+    -- interect_point = P - D*n
+
+    RETURN(point - shapes__distance_of_point_to_plane(point, plane) * plane.normal)
+  END shapes__project_point_on_plane
+
+ROUTINE shapes__distance_of_point_to_plane
+  BEGIN
+    -- calculate distance from point to the plane
+    RETURN(plane.normal@point + plane.d)
+  END shapes__distance_of_point_to_plane

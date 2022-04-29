@@ -6,4 +6,17 @@
 %define prog_name shapes
 %define prog_name_alias shape
 
+
+%ifdef shapes_t
+-- create plane from normal.
+declare_function(prog_name,create_plane,prog_name_alias,cpln)
+ROUTINE shapes__create_plane(origin : VECTOR; normal_vec : VECTOR; out_plane : t_PLANE) FROM shapes
+declare_function(prog_name,project_point_on_plane,prog_name_alias,prjpln)
+ROUTINE shapes__project_point_on_plane(point : VECTOR; plane : t_PLANE) : VECTOR FROM shapes
+declare_function(prog_name,distance_of_point_to_plane,prog_name_alias,dstpln)
+ROUTINE shapes__distance_of_point_to_plane(point : VECTOR; plane : t_PLANE) : REAL FROM shapes
+%else
+%warning 'shapes.klt needs to be included to use shapes.klh header'
+%endif
+
 %endif --shapes_h

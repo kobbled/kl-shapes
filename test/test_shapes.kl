@@ -6,6 +6,7 @@ PROGRAM test_shapes
 
 %from systemlib.klh %import VEC
 %INCLUDE kunit.klh
+%INCLUDE shapes.klh
 
 %class cyltst('cylinder.klc','cylinder.klh')
 
@@ -43,14 +44,64 @@ ROUTINE t_cyl_col : BOOLEAN
     -- -- b4 = false
     b[4] = cyltst__point_collision(p[4])
 
+    cyltst__clear
+
     RETURN ( kunit_assert(b[1]) AND NOT kunit_assert(b[2]) AND & 
              NOT kunit_assert(b[3]) AND NOT kunit_assert(b[4]))
 
   END t_cyl_col
 
+ROUTINE t_pnt2pln : BOOLEAN
+  VAR
+    origin : ARRAY[4] OF VECTOR
+    normal : ARRAY[4] OF VECTOR
+    point : ARRAY[4] OF VECTOR
+    expected : ARRAY[4] OF VECTOR
+    planes : ARRAY[4] OF T_PLANE
+  BEGIN
+    WRITE(CR,CR)
+    --point above plane
+    origin[1] = VEC(-2.73875,-1.91717,0.59822)
+    normal[1] = VEC(2.06,1.53,1.7)
+    point[1] = VEC(8.51735,-8.80025,2.73481)
+    expected[1] = VEC(5.02,-11.42,-0.17)
+
+    shapes__create_plane(origin[1], normal[1], planes[1])
+
+    --point below plane
+    origin[2] = VEC(-1.2,-3.2,0.6)
+    normal[2] = VEC(-1.32,-0.43,1.7)
+    point[2] = VEC(4.3,-7.1,-0.5)
+    expected[2] = VEC(2.25,-7.77,2.14)
+
+    shapes__create_plane(origin[2], normal[2], planes[2])
+
+    --0 d
+    origin[3] = VEC(0,0,0)
+    normal[3] = VEC(1.58,2.83,1)
+    point[3] = VEC(4.71,1.04,2.73)
+    expected[3] = VEC(2.91,-2.19,1.59)
+
+    shapes__create_plane(origin[3], normal[3], planes[3])
+
+    --flat plane
+    origin[4] = VEC(0,0,0)
+    normal[4] = VEC(0,0,1)
+    point[4] = VEC(-4,-2.74,-1.52)
+    expected[4] = VEC(-4,-2.74,0)
+
+    shapes__create_plane(origin[4], normal[4], planes[4])
+
+    RETURN( kunit_eq_vec(expected[1], shapes__project_point_on_plane(point[1], planes[1]) ) AND
+         kunit_eq_vec(expected[2], shapes__project_point_on_plane(point[2], planes[2]) ) AND  
+         kunit_eq_vec(expected[3], shapes__project_point_on_plane(point[3], planes[3]) ) AND
+         kunit_eq_vec(expected[4], shapes__project_point_on_plane(point[4], planes[4]) ) )
+  END t_pnt2pln
+
 BEGIN
-    -- total assersions 4
+    -- total assersions 8
     kunit_test('test straight cylinder point collision', t_cyl_col) -- assersions 4 
+    kunit_test('test point projection on plane', t_pnt2pln) -- assersions 4
 
     kunit_done
 END test_shapes
