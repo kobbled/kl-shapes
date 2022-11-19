@@ -5,8 +5,8 @@ PROGRAM test_shapes
 %include shapes.klt
 
 %from systemlib.klh %import VEC
-%INCLUDE kunit.klh
-%INCLUDE shapes.klh
+%include kunit.klh
+%include shapes.klh
 
 %class cyltst('cylinder.klc','cylinder.klh')
 
